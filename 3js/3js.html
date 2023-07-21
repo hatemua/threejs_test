@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Three.js FBXLoader Example</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #canvas-container {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="canvas-container"></div>
+   <button onclick="changeMovement(0)">Movement 1</button>
+    <button onclick="changeMovement(1)">Movement 2</button>
+   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+<script type="importmap">
+  {
+    "imports": {
+       "three": "https://unpkg.com/three@0.154.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.154.0/examples/jsm/"
+    }
+  }
+</script>
+ 
+  <script type="module">
+   import * as THREE from 'three';
+
+			import Stats from 'three/addons/libs/stats.module.js';
+
+			import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+			import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+
+			let camera, scene, renderer, stats;
+
+			const clock = new THREE.Clock();
+
+			let mixer;
+
+			init();
+			animate();
+			
+			function init() {
+
+				const container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.set( 100, 200, 300 );
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xa0a0a0 );
+				scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+
+				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444, 5 );
+				hemiLight.position.set( 0, 200, 0 );
+				scene.add( hemiLight );
+
+				const dirLight = new THREE.DirectionalLight( 0xffffff, 5 );
+				dirLight.position.set( 0, 200, 100 );
+				dirLight.castShadow = true;
+				dirLight.shadow.camera.top = 180;
+				dirLight.shadow.camera.bottom = - 100;
+				dirLight.shadow.camera.left = - 120;
+				dirLight.shadow.camera.right = 120;
+				scene.add( dirLight );
+
+				// scene.add( new THREE.CameraHelper( dirLight.shadow.camera ) );
+
+				// ground
+				const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+				mesh.rotation.x = - Math.PI / 2;
+				mesh.receiveShadow = true;
+				scene.add( mesh );
+
+				const grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
+				grid.material.opacity = 0.2;
+				grid.material.transparent = true;
+				scene.add( grid );
+
+				// model
+				const loader = new FBXLoader();
+				/*loader.load( '3js.fbx', function ( object ) {
+
+					mixer = new THREE.AnimationMixer( object );
+
+					const action = mixer.clipAction( object.animations[ 0 ] );
+					action.play();
+
+					object.traverse( function ( child ) {
+
+						if ( child.isMesh ) {
+
+							child.castShadow = true;
+							child.receiveShadow = true;
+
+						}
+
+					} );
+
+					scene.add( object );
+
+				} );*/
+				 const movements = [
+      { name: 'walk', file: 'X Bot@Capoeira.fbx' , action: null},
+      { name: 'TheBoss', file: '3js.fbx' , action: null}
+      // Add more movements here as needed
+    ];
+
+    // Load and set up movements/animations
+    let mixer = new THREE.AnimationMixer();
+
+    function loadMovement(movement) {
+      loader.load(movement.file, function ( object ) {
+                   console.log(object)
+					mixer = new THREE.AnimationMixer( object );
+
+					const action = mixer.clipAction( object.animations[ 0 ] );
+					movement.action = action;
+                    movement.mixer = mixer;
+					//action.play( );
+					const clip = object.animations[0]; // Assuming each movement has only one animation
+					 movement.action.setDuration(clip.duration);
+
+        // Adjust the default time scale for each movement
+        movement.action.setEffectiveTimeScale(1.0);
+
+        // Adjust the default crossfade duration for smoother transitions
+        movement.action.crossFadeDuration = 0.3;
+					object.traverse( function ( child ) {
+
+						if ( child.isMesh ) {
+
+							child.castShadow = true;
+							child.receiveShadow = true;
+
+						}
+
+					} );
+
+					scene.add( object );
+
+				} )
+    }
+	movements.forEach((movement) => {
+      loadMovement(movement);
+    });
+				
+	  function playMovement(index) {
+      // Stop any ongoing actions
+      movements.forEach((movement) => {
+        if (movement.action)
+          movement.action.stop();
+      });
+
+      // Play the action of the selected movement
+      const selectedMovement = movements[index];
+	  console.log(selectedMovement);
+      if (selectedMovement && selectedMovement.action) {
+        selectedMovement.action.play();
+      }
+    }
+//playMovement(0);
+
+    window.changeMovement = function(index) {
+      playMovement(index);
+    }
+    // Function to handle movement change
+   // Set the default movement here
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.useLegacyLights = false;
+				renderer.shadowMap.enabled = true;
+				container.appendChild( renderer.domElement );
+
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.target.set( 0, 100, 0 );
+				controls.update();
+
+				window.addEventListener( 'resize', onWindowResize );
+
+				// stats
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				const delta = clock.getDelta();
+
+				if ( mixer ) mixer.update( delta );
+
+				renderer.render( scene, camera );
+
+				stats.update();
+
+			}
+  </script>
+</body>
+</html>
