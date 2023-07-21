@@ -32,8 +32,8 @@
       var scene, camera, renderer,character;			
         var i=0;
         var clock, mixer, actions = {}, activeAction;
-        var fbxFiles = ['../threejs_test/files3D/Hip Hop Dancing.fbx', '../threejs_test/files3D/Reloading.fbx']; // Your FBX files here
-        var characterModel = '../threejs_test/files3D/The Boss.fbx'; // Your character model here
+        var fbxFiles = ['../files3D/Hip Hop Dancing.fbx', '../files3D/Reloading.fbx']; // Your FBX files here
+        var characterModel = '../files3D/The Boss.fbx'; // Your character model here
 
         init();
         animate();
@@ -71,7 +71,7 @@
 				mesh.receiveShadow = true;
 				scene.add( mesh );
 
-				loadCharacter('../threejs_test/files3D/The Boss.fbx');
+				loadCharacter('../files3D/The Boss.fbx');
 var light = new THREE.AmbientLight(0xffffff);
             scene.add(light);
 			renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -147,7 +147,7 @@ function loadCharacter(url) {
                         button.textContent = "first character";
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
-                             loadCharacter('../threejs_test/files3D/The Boss.fbx');
+                             loadCharacter('../files3D/The Boss.fbx');
                         });
                         document.getElementById('buttons').appendChild(button);
 
@@ -155,7 +155,7 @@ function loadCharacter(url) {
                         button.textContent = "second character";
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
-  loadCharacter('../threejs_test/files3D/ttt.fbx');
+  loadCharacter('../files3D/ttt.fbx');
                         });
                         document.getElementById('buttons').appendChild(button);
 function crossfade(actionFrom, actionTo, duration) {
