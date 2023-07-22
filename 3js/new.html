@@ -143,7 +143,7 @@ function loadCharacter(url) {
 			       
 
 			
-			   var button = document.createElement('button');
+						var button = document.createElement('button');
                         button.textContent = "first character";
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
@@ -151,12 +151,26 @@ function loadCharacter(url) {
                         });
                         document.getElementById('buttons').appendChild(button);
 
-     var button = document.createElement('button');
+						var button = document.createElement('button');
                         button.textContent = "second character";
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
-  loadCharacter('../files3D/ttt.fbx');
+						loadCharacter('../files3D/ttt.fbx');
                         });
+						var button = document.createElement('button');
+                        button.textContent = "-Speed";
+                        button.classList.add('btn');
+                        button.addEventListener('click', function() {
+					if (activeAction) {
+							activeAction.timeScale -= 0.1;  // Increase speed by 10%
+						}                        });
+						var button = document.createElement('button');
+                        button.textContent = "+Speed";
+                        button.classList.add('btn');
+                        button.addEventListener('click', function() {
+						if (activeAction) {
+								activeAction.timeScale += 0.1;  
+							}                        });
                         document.getElementById('buttons').appendChild(button);
 function crossfade(actionFrom, actionTo, duration) {
     // Start fading out the current action
