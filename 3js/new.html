@@ -156,7 +156,9 @@ function loadCharacter(url) {
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
 						loadCharacter('../files3D/ttt.fbx');
-                        });
+                        });                        
+						document.getElementById('buttons').appendChild(button);
+
 						var button = document.createElement('button');
                         button.textContent = "-Speed";
                         button.classList.add('btn');
@@ -164,7 +166,9 @@ function loadCharacter(url) {
 					if (activeAction) {
 							activeAction.timeScale -= 0.1;  // Increase speed by 10%
 						}                       
-                     });
+                     });                        
+					 document.getElementById('buttons').appendChild(button);
+
 						var button = document.createElement('button');
                         button.textContent = "+Speed";
                         button.classList.add('btn');
