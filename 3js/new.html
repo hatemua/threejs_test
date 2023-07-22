@@ -163,14 +163,16 @@ function loadCharacter(url) {
                         button.addEventListener('click', function() {
 					if (activeAction) {
 							activeAction.timeScale -= 0.1;  // Increase speed by 10%
-						}                        });
+						}                       
+                     });
 						var button = document.createElement('button');
                         button.textContent = "+Speed";
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
 						if (activeAction) {
 								activeAction.timeScale += 0.1;  
-							}                        });
+							}                       
+                         });
                         document.getElementById('buttons').appendChild(button);
 function crossfade(actionFrom, actionTo, duration) {
     // Start fading out the current action
