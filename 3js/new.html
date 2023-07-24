@@ -195,6 +195,19 @@ function loadCharacter(url) {
 						scene.background = new THREE.Color( "#FFBDBD" );						               
                      });                        
 					 document.getElementById('buttons').appendChild(button);
+					 var button = document.createElement('button');
+                        button.textContent = "change background images";
+                        button.classList.add('btn');
+                        button.addEventListener('click', function() {
+						const loader = new THREE.TextureLoader();
+const texture = loader.load('../files3D/back.jpg', () => {
+    renderer.render(scene, camera);
+});
+
+// Add the background texture to the scene
+scene.background = texture;						               
+                     });                        
+					 document.getElementById('buttons').appendChild(button);
 function crossfade(actionFrom, actionTo, duration) {
     // Start fading out the current action
     //actionFrom.fadeOut(duration);
