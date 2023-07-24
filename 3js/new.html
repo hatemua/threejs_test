@@ -192,11 +192,7 @@ function loadCharacter(url) {
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
 						console.log("ok");
-						var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-var cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
-						               
+						scene.background = new THREE.Color( "#FFBDBD" );						               
                      });                        
 					 document.getElementById('buttons').appendChild(button);
 function crossfade(actionFrom, actionTo, duration) {
