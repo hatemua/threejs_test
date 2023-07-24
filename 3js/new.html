@@ -191,9 +191,8 @@ function loadCharacter(url) {
                         button.textContent = "change background color";
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
-					if (activeAction) {
-							renderer.setClearColor(0xff0000);  // Increase speed by 10%
-						}                       
+						renderer.setClearColor(0xff0000);  // Increase speed by 10%
+						               
                      });                        
 					 document.getElementById('buttons').appendChild(button);
 function crossfade(actionFrom, actionTo, duration) {
