@@ -192,7 +192,10 @@ function loadCharacter(url) {
                         button.classList.add('btn');
                         button.addEventListener('click', function() {
 						console.log("ok");
-						renderer.setClearColor("#FFBDBD",1);  
+						var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+var cube = new THREE.Mesh( geometry, material );
+scene.add( cube );
 						               
                      });                        
 					 document.getElementById('buttons').appendChild(button);
